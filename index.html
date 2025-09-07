@@ -87,8 +87,12 @@
             color: var(--light);
             padding: 2rem 0;
         }
+        
+        .footer address {
+            font-style: normal;
+        }
 
-        .form-control {
+        .form-control, .form-select {
             border-radius: 8px;
         }
         
@@ -161,7 +165,7 @@
         </div>
     </header>
 
-    <!-- Products Section (placeholder) -->
+    <!-- Products Section -->
     <section id="products" class="bg-white">
         <div class="container">
             <h2 class="text-center mb-4">Featured Products</h2>
@@ -228,15 +232,27 @@
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="district" class="form-label">District</label>
-                                    <input type="text" class="form-control" id="district" name="district" required>
+                                    <select class="form-select" id="district" name="district" required>
+                                        <option value="" disabled selected>Select District</option>
+                                        <option value="Dehradun">Dehradun</option>
+                                        <option value="Haridwar">Haridwar</option>
+                                        <option value="Pauri Garhwal">Pauri Garhwal</option>
+                                        <option value="Tehri Garhwal">Tehri Garhwal</option>
+                                        <option value="Chamoli">Chamoli</option>
+                                        <option value="Rudraprayag">Rudraprayag</option>
+                                        <option value="Uttarkashi">Uttarkashi</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="tehsil" class="form-label">Tehsil</label>
-                                    <input type="text" class="form-control" id="tehsil" name="tehsil">
+                                    <select class="form-select" id="tehsil" name="tehsil" required>
+                                        <option value="" disabled selected>Select Tehsil</option>
+                                        <!-- Tehsil options will be populated dynamically by JavaScript -->
+                                    </select>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="village" class="form-label">Village</label>
-                                    <input type="text" class="form-control" id="village" name="village">
+                                    <input type="text" class="form-control" id="village" name="village" placeholder="Enter Village Name" required>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -284,10 +300,34 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer with restored contact info -->
     <footer class="footer">
         <div class="container text-center">
-            <p>&copy; 2024 PahadiHaat. All rights reserved.</p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">PahadiHaat</h5>
+                    <p>Connecting the heart of Uttarakhand with the world.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-home me-2"></i> Pauri Garhwal, Uttarakhand, 246174</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@pahadihaat.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 98765 43210</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#about" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="#services" class="text-light text-decoration-none">Services</a></li>
+                        <li><a href="#products" class="text-light text-decoration-none">Products</a></li>
+                        <li><a href="#contact" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mb-4">
+            <p>&copy; 2024 PahadiHaat. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -306,9 +346,6 @@
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
         import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
         
-        // Your web app's Firebase configuration
-        // This is now being handled by the `__firebase_config` variable for security.
-
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -344,6 +381,33 @@
         // Call the sign-in function on page load
         signIn();
 
+        // --- Data for Districts, Tehsils, and Villages ---
+        const locationData = {
+            "Dehradun": ["Chakrata", "Dehradun", "Rishikesh", "Vikasnagar"],
+            "Haridwar": ["Haridwar", "Roorkee", "Laksar", "Jwalapur"],
+            "Pauri Garhwal": ["Pauri", "Kotdwar", "Lansdowne", "Srinagar"],
+            "Tehri Garhwal": ["Tehri", "Narendranagar", "Dhanaulti", "Pratapnagar"],
+            "Chamoli": ["Chamoli", "Gairsain", "Joshimath", "Karnaprayag"],
+            "Rudraprayag": ["Rudraprayag", "Ukhimath", "Kedarnath", "Gopeshwar"],
+            "Uttarkashi": ["Uttarkashi", "Purola", "Barkot", "Gangotri"]
+        };
+
+        const districtSelect = document.getElementById('district');
+        const tehsilSelect = document.getElementById('tehsil');
+
+        districtSelect.addEventListener('change', (e) => {
+            const selectedDistrict = e.target.value;
+            tehsilSelect.innerHTML = '<option value="" disabled selected>Select Tehsil</option>'; // Reset tehsil options
+            if (selectedDistrict && locationData[selectedDistrict]) {
+                locationData[selectedDistrict].forEach(tehsil => {
+                    const option = document.createElement('option');
+                    option.value = tehsil;
+                    option.textContent = tehsil;
+                    tehsilSelect.appendChild(option);
+                });
+            }
+        });
+
         // Handle Seller Form Submission
         const sellerForm = document.getElementById('seller-form');
         sellerForm.addEventListener('submit', async (e) => {
@@ -352,7 +416,6 @@
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
 
-            // Ensure a userId is available before submitting
             if (!userId) {
                 showMessage('Authentication not ready. Please wait a moment and try again.', 'error');
                 submitButton.disabled = false;
@@ -360,7 +423,6 @@
                 return;
             }
 
-            // Get form data
             const formData = new FormData(sellerForm);
             const data = {
                 name: formData.get('name'),
@@ -374,7 +436,6 @@
             };
 
             try {
-                // Add a new document to the 'sellers' collection
                 await addDoc(collection(db, `/artifacts/${appId}/public/data/sellers`), data);
                 showMessage('Thank you for registering! We will contact you soon.', 'success');
                 sellerForm.reset();
@@ -402,7 +463,6 @@
                 return;
             }
             
-            // Get form data
             const data = {
                 name: document.getElementById('contact-name').value,
                 email: document.getElementById('contact-email').value,
