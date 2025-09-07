@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PahadiHaat - Uttarakhand's Local Products Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #7cb342;
+            --accent: #ff9800;
+            --light: #f1f8e9;
+            --dark: #1b5e20;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            /* Added a mountain background with an overlay for readability */
+            background-image: linear-gradient(rgba(248, 249, 250, 0.8), rgba(248, 249, 250, 0.8)), url('https://images.unsplash.com/photo-1594916895315-998842d0932c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .navbar {
+            background-color: var(--primary) !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: var(--light) !important;
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            color: #fff !important;
+        }
+
+        #hero {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 5rem 0;
+        }
+
+        #hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        #products, #categories, #contact, #seller-registration {
+            padding: 4rem 0;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark);
+            border-color: var(--dark);
+        }
+
+        .footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 0;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+        
+        .message-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-box.show {
+            opacity: 1;
+        }
+
+        .message-box.success {
+            background-color: #4caf50;
+        }
+
+        .message-box.error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Message Box for user feedback -->
+    <div id="message-box" class="message-box"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">PahadiHaat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#seller-registration">Become a Seller</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero" class="text-center">
+        <div class="container">
+            <h1>PahadiHaat</h1>
+            <p class="lead">Connecting villagers in Uttarakhand with buyers worldwide. Empowering local communities, one product at a time.</p>
+        </div>
+    </header>
+
+    <!-- Products Section (placeholder) -->
+    <section id="products" class="bg-white">
+        <div class="container">
+            <h2 class="text-center mb-4">Featured Products</h2>
+            <div class="row" id="product-list">
+                <!-- Product cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories">
+        <div class="container">
+            <h2 class="text-center mb-4">Product Categories</h2>
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="card p-4">
+                        <i class="fas fa-paw fa-3x mb-3 text-success"></i>
+                        <h5>Livestock</h5>
+                        <p class="text-muted">Cattle, Goats, Puppies, etc.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card p-4">
+                        <i class="fas fa-egg fa-3x mb-3 text-success"></i>
+                        <h5>Dairy & Poultry</h5>
+                        <p class="text-muted">Eggs, Ghee, Milk, Chicken, etc.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card p-4">
+                        <i class="fas fa-seedling fa-3x mb-3 text-success"></i>
+                        <h5>Produce</h5>
+                        <p class="text-muted">Fresh Fruits, Vegetables, and Grains</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card p-4">
+                        <i class="fas fa-hive fa-3x mb-3 text-success"></i>
+                        <h5>Honey & Oils</h5>
+                        <p class="text-muted">Pure Himalayan Honey and oils</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seller Registration Form -->
+    <section id="seller-registration" class="bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Become a Seller</h2>
+            <p class="text-center mb-5">Join our platform and share your local products with the world.</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card p-4">
+                        <form id="seller-form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="district" class="form-label">District</label>
+                                    <input type="text" class="form-control" id="district" name="district" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="tehsil" class="form-label">Tehsil</label>
+                                    <input type="text" class="form-control" id="tehsil" name="tehsil">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="village" class="form-label">Village</label>
+                                    <input type="text" class="form-control" id="village" name="village">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="products" class="form-label">Products You Want to Sell (e.g., Honey, Ghee, Goats)</label>
+                                <textarea class="form-control" id="products" name="products" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="videoOption" name="videoOption">
+                                <label class="form-check-label" for="videoOption">I would like to know about the option to upload a short video of my products.</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="seller-submit-btn">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="text-center mb-4">Contact Us</h2>
+            <p class="text-center mb-5">Have a question or need support? We're here to help.</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card p-4">
+                        <form id="contact-form">
+                            <div class="mb-3">
+                                <label for="contact-name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="contact-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contact-email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="contact-email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contact-message" class="form-label">Message</label>
+                                <textarea class="form-control" id="contact-message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="contact-submit-btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2024 PahadiHaat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS (required for some components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase SDK (latest modular version) -->
+    <script type="module">
+        // Global variables provided by the Canvas environment.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Import the functions you need from the SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+        
+        // Your web app's Firebase configuration
+        // This is now being handled by the `__firebase_config` variable for security.
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Show a temporary message to the user
+        function showMessage(message, type) {
+            const msgBox = document.getElementById('message-box');
+            msgBox.textContent = message;
+            msgBox.className = `message-box show ${type}`;
+            setTimeout(() => {
+                msgBox.className = 'message-box';
+            }, 3000);
+        }
+
+        // Handle user authentication and get a unique userId
+        let userId = null;
+        async function signIn() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser.uid;
+                console.log("Authenticated with userId:", userId);
+            } catch (error) {
+                console.error("Authentication failed:", error);
+                showMessage('Authentication failed. Please try reloading the page.', 'error');
+            }
+        }
+
+        // Call the sign-in function on page load
+        signIn();
+
+        // Handle Seller Form Submission
+        const sellerForm = document.getElementById('seller-form');
+        sellerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = document.getElementById('seller-submit-btn');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
+            // Ensure a userId is available before submitting
+            if (!userId) {
+                showMessage('Authentication not ready. Please wait a moment and try again.', 'error');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(sellerForm);
+            const data = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                district: formData.get('district'),
+                tehsil: formData.get('tehsil'),
+                village: formData.get('village'),
+                products: formData.get('products'),
+                videoOption: formData.get('videoOption') ? true : false,
+                timestamp: new Date()
+            };
+
+            try {
+                // Add a new document to the 'sellers' collection
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/sellers`), data);
+                showMessage('Thank you for registering! We will contact you soon.', 'success');
+                sellerForm.reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                showMessage('An error occurred. Please try again later.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
+            }
+        });
+
+        // Handle Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = document.getElementById('contact-submit-btn');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
+            if (!userId) {
+                showMessage('Authentication not ready. Please wait a moment and try again.', 'error');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+                return;
+            }
+            
+            // Get form data
+            const data = {
+                name: document.getElementById('contact-name').value,
+                email: document.getElementById('contact-email').value,
+                message: document.getElementById('contact-message').value,
+                timestamp: new Date()
+            };
+
+            try {
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/contacts`), data);
+                showMessage('Your message has been sent successfully. Thank you!', 'success');
+                contactForm.reset();
+            } catch (error) {
+                console.error("Error adding contact message: ", error);
+                showMessage('An error occurred. Please try again later.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+            }
+        });
+
+        // --- Sample Product Data and Display Logic ---
+        
+        const sampleProducts = [
+            {
+                image: "https://images.unsplash.com/photo-1631553313936-3983226760b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                title: "Pure Himalayan Honey",
+                description: "Authentic wild honey from the forests of Uttarakhand. Rich in flavor and medicinal properties.",
+                seller: "Prakash Singh"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1627581177651-6d734e56598c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                title: "Fresh Farm Eggs",
+                description: "Organic, free-range eggs from chickens raised in a natural environment. High in protein and taste.",
+                seller: "Sunita Devi"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1628185567307-e85df649f82d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                title: "Mountain Goat",
+                description: "Locally-bred goats, known for their lean and flavorful meat. Perfect for a traditional meal.",
+                seller: "Rajendra Rawat"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1599863261642-e9c57d5402a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                title: "Organic Ghee",
+                description: "Clarified butter made from the milk of indigenous cows. A staple in every Pahadi kitchen.",
+                seller: "Anjali Bhatt"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1594916895315-998842d0932c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                title: "Fresh Mushrooms",
+                description: "A selection of fresh, locally foraged mushrooms from the forests of Uttarakhand.",
+                seller: "Vikram Negi"
+            }
+        ];
+
+        function createProductCard(product) {
+            return `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="${product.image}" class="card-img-top" alt="${product.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.title}</h5>
+                            <p class="card-text">${product.description}</p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <small class="text-muted">Sold by: ${product.seller}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayProducts() {
+            const productList = document.getElementById('product-list');
+            if (productList) {
+                productList.innerHTML = sampleProducts.map(createProductCard).join('');
+            }
+        }
+        
+        // Ensure products are displayed once the page content is loaded
+        window.addEventListener('DOMContentLoaded', displayProducts);
+    </script>
+</body>
+</html>
